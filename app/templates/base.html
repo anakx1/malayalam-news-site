@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#b91c1c">
+    <meta name="description" content="പ്രധാന മലയാളം വാർത്തകൾ - ലൈവ് ന്യൂസ് അഗ്രിഗേറ്റർ. കേരളം, ഇന്ത്യ, ലോകം, കായികം, സിനിമ, ടെക്നോളജി വാർത്തകൾ.">
+    <meta property="og:site_name" content="മലയാളം ന്യൂസ് ഹബ്">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ml_IN">
+
     <title>മലയാളം ന്യൂസ് | Malayalam News Hub</title>
-    <meta name="description" content="പ്രധാന മലയാളം വാർത്തകൾ - ലൈവ് ന്യൂസ് അഗ്രിഗേറ്റർ">
 
     <!-- Google Fonts: Noto Sans Malayalam + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -27,30 +28,21 @@
                         malayalam: ['Noto Sans Malayalam', 'sans-serif'],
                     },
                     colors: {
-                        editorial: {
-                            red: '#b91c1c',
-                            redDark: '#991b1b',
-                            paper: '#fafaf9',
-                            charcoal: '#1f2937',
-                            muted: '#6b7280',
-                            border: '#e5e7eb',
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        red: { DEFAULT: '#b91c1c', dark: '#991b1b', light: '#fef2f2' },
                     },
                 }
             }
         }
     </script>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body class="bg-editorial-paper text-editorial-charcoal transition-colors duration-300 antialiased selection:bg-editorial-red selection:text-white"
-      :class="{'dark': darkMode}"
+<body class="bg-paper text-charcoal transition-colors duration-300 antialiased selection:bg-red selection:text-white"
       x-data="{ darkMode: false }">
 
-    <!-- Dark mode class toggle via Alpine-like vanilla JS handled in app.js -->
     <div id="app">
         {% block content %}{% endblock %}
     </div>

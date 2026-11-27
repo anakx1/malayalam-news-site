@@ -24,13 +24,13 @@ async def homepage(request: Request) -> HTMLResponse:
 
 
 async def api_news(request: Request) -> JSONResponse:
-    """Return news articles as JSON."""
+    """Return news articles as JSON with pagination metadata."""
     category = request.query_params.get("category")
     search = request.query_params.get("search")
     try:
-        limit = int(request.query_params.get("limit", "50"))
+        limit = int(request.query_params.get("limit", "24"))
     except ValueError:
-        limit = 50
+        limit = 24
     try:
         offset = int(request.query_params.get("offset", "0"))
     except ValueError:
@@ -45,6 +45,9 @@ async def api_news(request: Request) -> JSONResponse:
     return JSONResponse({
         "articles": articles,
         "total": total,
+        "limit": limit,
+        "offset": offset,
+        "has_more": (offset + len(articles)) < total,
         "category": category or "all",
         "search": search,
     })
@@ -75,7 +78,7 @@ async def api_refresh(request: Request) -> JSONResponse:
 
 
 async def api_status(request: Request) -> JSONResponse:
-    """Return update status."""
+    """Return update status with feed health."""
     status = get_refresh_status()
     if not status:
         return JSONResponse({
@@ -86,10 +89,50 @@ async def api_status(request: Request) -> JSONResponse:
             "sources_failed": 0,
             "details": "No refresh has been performed yet",
             "scheduler_running": scheduler.running,
+            "feed_health": [],
         })
+
+    # Compute feed health: articles per category in last 24h
+    from datetime import datetime, timezone, timedelta
+    from app.database import get_connection
+    cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+    feed_health = []
+    with get_connection() as conn:
+        for feed in RSS_FEEDS if 'RSS_FEEDS' in globals() else []:
+            pass
+    # Import config lazily to avoid circular import issues
+    from app.config import RSS_FEEDS
+    with get_connection() as conn:
+        for feed in RSS_FEEDS:
+            cat = feed["category"]
+            try:
+                rows = get_articles(conn=conn, category=cat, limit=1, offset=0)
+                latest = rows[0] if rows else None
+                count_today = 0
+                if latest and latest["fetched_at"] >= cutoff:
+                    # count articles fetched today in this category
+                    today_rows = get_articles(conn=conn, category=cat, limit=500, offset=0)
+                    count_today = sum(1 for r in today_rows if r["fetched_at"] >= cutoff)
+                feed_health.append({
+                    "category": cat,
+                    "name": feed["name"],
+                    "latest_article": latest["title"] if latest else None,
+                    "articles_last_24h": count_today,
+                    "healthy": count_today > 0,
+                })
+            except Exception:
+                feed_health.append({
+                    "category": cat,
+                    "name": feed["name"],
+                    "latest_article": None,
+                    "articles_last_24h": 0,
+                    "healthy": False,
+                })
+
     return JSONResponse({
         **status,
         "scheduler_running": scheduler.running,
+        "feed_health": feed_health,
     })
 
 

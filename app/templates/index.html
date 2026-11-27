@@ -2,197 +2,157 @@
 
 {% block content %}
 <!-- Header -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-editorial-border dark:bg-editorial-charcoal/90 dark:border-editorial-border">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <!-- Brand -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="location.href='/'">
-                <div class="w-8 h-8 bg-editorial-red rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-editorial-red/20">
-                    <i data-lucide="newspaper" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold font-malayalam tracking-tight text-editorial-charcoal dark:text-white">മലയാളം ന്യൂസ്</h1>
-                    <p class="text-xs uppercase tracking-wider text-editorial-muted dark:text-editorial-muted font-sans">MALAYALAM NEWS HUB</p>
-                </div>
+<header class="site-header">
+    <div class="header-inner">
+        <!-- Brand -->
+        <a href="/" class="brand" aria-label="Malayalam News Home">
+            <div class="brand-mark">മല</div>
+            <div class="brand-text">
+                <div class="brand-title">മലയാളം ന്യൂസ്</div>
+                <div class="brand-sub">MALAYALAM NEWS HUB</div>
             </div>
+        </a>
 
-            <!-- Search -->
-            <div class="hidden md:flex items-center flex-1 max-w-md mx-4">
-                <div class="relative w-full">
-                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-editorial-muted"></i>
-                    <input type="text" id="searchInput" placeholder="തെരشاف് ചെയ്യുക... Search..." 
-                           class="w-full pl-10 pr-4 py-2 bg-editorial-paper border border-editorial-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-editorial-red focus:border-transparent transition-all dark:bg-editorial-charcoal dark:text-white dark:border-editorial-border"
-                           x-on:input.debounce.300ms="handleSearch">
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <div class="flex items-center gap-3">
-                <!-- Refresh Status Badge -->
-                <div id="refreshStatus" class="hidden px-2 py-1 rounded-full text-xs font-medium bg-editorial-red/10 text-editorial-red dark:bg-editorial-red/20 dark:text-editorial-red border border-editorial-red/20">
-                    <i data-lucide="refresh-cw" class="w-3 h-3 mr-1 inline animate-spin"></i>
-                    <span id="refreshStatusText">പുതുക്കുന്നു...</span>
-                </div>
-
-                <!-- Dark Mode Toggle -->
-                <button id="themeToggle" class="p-2 rounded-lg hover:bg-editorial-paper dark:hover:bg-white/10 transition-colors" aria-label="Toggle dark mode">
-                    <i data-lucide="sun" class="w-5 h-5 text-editorial-charcoal dark:text-white"></i>
-                    <i data-lucide="moon" class="w-5 h-5 text-editorial-charcoal dark:text-white hidden"></i>
-                </button>
-
-                <!-- Manual Refresh -->
-                <button id="refreshBtn" class="flex items-center gap-2 px-4 py-2 bg-editorial-red text-white rounded-lg text-sm font-medium hover:bg-editorial-redDark transition-colors shadow-sm hover:shadow-md"
-                        onclick="handleRefresh()">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">പുതുക്കുക</span>
-                </button>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-editorial-paper dark:hover:bg-white/10 transition-colors">
-                    <i data-lucide="menu" class="w-5 h-5 text-editorial-charcoal dark:text-white"></i>
-                </button>
-            </div>
+        <!-- Search -->
+        <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="തേടുക… Search…"
+                   class="search-input"
+                   autocomplete="off">
         </div>
 
-        <!-- Date & Last Updated -->
-        <div class="flex items-center justify-between px-2 py-2 border-b border-editorial-border/50 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm">
-            <div class="text-sm font-medium text-editorial-charcoal dark:text-gray-300 flex items-center gap-2">
-                <i data-lucide="calendar" class="w-4 h-4 text-editorial-muted"></i>
-                <span id="currentDate">ഓഗസ്റ്റ് 15, 2024</span>
-            </div>
-            <div class="text-xs text-editorial-muted flex items-center gap-1">
-                <i data-lucide="clock" class="w-3 h-3"></i>
-                <span id="lastUpdated">എവിടെയും അപ്‌ഡേറ്റ് ചെയ്തിട്ടില്ല</span>
+        <!-- Controls -->
+        <div class="controls">
+            <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Theme">
+                <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79"/></svg>
+            </button>
+
+            <button id="refreshBtn" class="icon-btn" aria-label="Refresh news" title="പുതുക്കുക" onclick="handleRefresh()">
+                <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v3h-3"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/><path d="M1 10h3v3"/></svg>
+            </button>
+
+            <button id="mobileMenuBtn" class="icon-btn md:hidden" aria-label="Open categories" onclick="openMobileDrawer()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Date & Refresh Status -->
+    <div class="date-bar">
+        <div class="date-left">
+            <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="currentDate"></span>
+        </div>
+        <div class="date-right">
+            <div id="refreshStatus" class="refresh-badge idle">
+                <svg class="status-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="10" stroke-dasharray="40 60" stroke-dashoffset="0"/><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.2s" repeatCount="indefinite"/></svg>
+                <span id="refreshStatusText">ലഭ്യമാണ്</span>
             </div>
         </div>
     </div>
 </header>
 
 <!-- Mobile Category Drawer -->
-<div id="mobileDrawer" class="fixed inset-0 z-40 bg-white dark:bg-editorial-charcoal transform translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="p-4 border-b border-editorial-border dark:border-white/10 flex justify-between items-center">
-        <h2 class="text-lg font-bold font-malayalam">വിഭাগങ്ങൾ</h2>
-        <button onclick="closeMobileDrawer()" class="p-2 hover:bg-editorial-paper dark:hover:bg-white/10 rounded-lg">
-            <i data-lucide="x" class="w-5 h-5 text-editorial-charcoal dark:text-white"></i>
+<div id="mobileDrawerOverlay" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm hidden" onclick="closeMobileDrawer()"></div>
+<div id="mobileDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-charcoal transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl border-l border-border">
+    <div class="p-5 border-b border-border flex justify-between items-center">
+        <h2 class="font-malayalam font-bold text-lg">വിഭাগങ്ങൾ</h2>
+        <button onclick="closeMobileDrawer()" class="p-2 hover:bg-red-light rounded-lg transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
     </div>
-    <div class="flex-1 overflow-y-auto p-4 space-y-2" id="mobileCategories">
-        <!-- Populated by JS -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-1" id="mobileCategories"></div>
+    <div class="p-4 border-t border-border">
+        <button onclick="handleRefresh(); closeMobileDrawer();" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red text-white rounded-xl text-sm font-medium shadow-lg hover:bg-red-dark transition-colors">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v3h-3"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/><path d="M1 10h3v3"/></svg>
+            പുതുക്കുക
+        </button>
     </div>
 </div>
 
-<!-- Overlay for mobile drawer -->
-<div id="drawerOverlay" class="fixed inset-0 z-30 bg-black/50 hidden transition-opacity" onclick="closeMobileDrawer()"></div>
-
-<main class="pt-20 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+<main class="container">
     <!-- Category Navigation -->
-    <div class="mb-6">
-        <div class="flex overflow-x-auto pb-2 gap-2 scrollbar-hidden" id="categoryTabs">
-            <!-- Populated by JS -->
-        </div>
+    <div class="category-nav">
+        <div class="category-scroll" id="categoryTabs"></div>
     </div>
 
-    <!-- Featured / Hero Section -->
-    <div id="featuredSection" class="mb-8">
-        <!-- Populated by JS -->
-    </div>
+    <!-- Featured Hero -->
+    <div id="featuredSection"></div>
 
     <!-- News Feed -->
-    <div id="newsFeed" class="space-y-4">
-        <!-- Populated by JS -->
+    <div id="newsFeed"></div>
+
+    <!-- Loading Skeletons -->
+    <div id="loadingSkeletons" class="hidden">
+        <div class="skeleton skeleton-hero"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.25rem">
+            <div class="flex flex-col gap-1">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-text wide"></div>
+                <div class="skeleton skeleton-text med"></div>
+                <div class="skeleton skeleton-text short"></div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-text wide"></div>
+                <div class="skeleton skeleton-text med"></div>
+                <div class="skeleton skeleton-text short"></div>
+            </div>
+            <div class="flex flex-col gap-1">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-text wide"></div>
+                <div class="skeleton skeleton-text med"></div>
+                <div class="skeleton skeleton-text short"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Empty State -->
-    <div id="emptyState" class="hidden text-center py-16">
-        <div class="w-16 h-16 bg-editorial-paper rounded-full flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="search-x" class="w-8 h-8 text-editorial-muted"></i>
-        </div>
-        <h3 class="text-lg font-medium text-editorial-charcoal dark:text-white">അന്വേഷണത്തിൽ ഫലങ്ങളില്ല</h3>
-        <p class="text-editorial-muted">പോലീതെテルกับ നോക്കുക അല്ലെങ്കിൽ പുതിയ വാർത്തകൾക്കായി പുതുക്കുക.</p>
-        <button onclick="clearSearch()" class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-editorial-red text-white rounded-lg text-sm font-medium hover:bg-editorial-redDark transition-colors">
-            <i data-lucide="x" class="w-4 h-4"></i>
-            തിരയൽ മறയ്ക്കുക
+    <div id="emptyState" class="state-wrap hidden">
+        <div class="state-icon">🔍</div>
+        <h3 class="state-title">ഫലങ്ങൾ കണ്ടെത്തിയില്ല</h3>
+        <p class="state-desc">നിങ്ങൾ തിരയുന്ന വാർത്തകൾ ലഭ്യമല്ല. മറ്റ് വിഭാഗങ്ങൾ പരീക്ഷിക്കുക അല്ലെങ്കിൽ പുതുക്കുക.</p>
+        <button onclick="clearSearch()" class="px-5 py-2 bg-red text-white rounded-xl text-sm font-medium hover:bg-red-dark transition-colors inline-block">
+            തിരയൽ ഒഴിവാക്കുക
         </button>
     </div>
 
     <!-- Error State -->
-    <div id="errorState" class="hidden text-center py-16 border border-editorial-border rounded-xl p-6 bg-red-50 dark:bg-red-900/20">
-        <div class="w-12 h-12 bg-red-100 dark:bg-red-800 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="alert-circle" class="w-6 h-6 text-red-600 dark:text-red-400"></i>
-        </div>
-        <h3 class="text-lg font-medium text-red-800 dark:text-red-400">വാർത്തകൾ ലഭ്യമല്ല</h3>
-        <p class="text-red-600 dark:text-red-300 mt-2 max-w-md mx-auto" id="errorMessage">ഫീഡ് ലഭ്യമല്ല. ദയവ സമയത്തിന് ശേഷം ശ്രമിക്കുക.</p>
-        <button onclick="handleRefresh()" class="mt-6 inline-flex items-center gap-2 px-6 py-2 bg-editorial-red text-white rounded-lg text-sm font-medium hover:bg-editorial-redDark transition-colors">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+    <div id="errorState" class="state-wrap hidden" style="background: #fef2f2; border-radius: 16px; border: 1px solid #fecaca; margin: 1rem 0;">
+        <div class="state-icon" style="background: #fee2e2; color: #dc2626;">⚠️</div>
+        <h3 class="state-title" style="color: #b91c1c;">വാർത്തകൾ ലഭ്യമല്ല</h3>
+        <p class="state-desc" id="errorMessage" style="color: #dc2626;">ഫീഡ് ലഭ്യമല്ല. ക aws പിന്നീട് ശ്രമിക്കുക.</p>
+        <button onclick="handleRefresh()" class="px-5 py-2 bg-red text-white rounded-xl text-sm font-medium hover:bg-red-dark transition-colors inline-block">
             വീണ്ടും ശ്രമിക്കുക
         </button>
     </div>
-
-    <!-- Loading Skeletons -->
-    <div id="loadingSkeletons" class="hidden space-y-4">
-        <div class="h-96 rounded-xl bg-editorial-paper animate-pulse overflow-hidden">
-            <div class="h-1/3 bg-editorial-border"></div>
-            <div class="h-2/3 p-6 space-y-4">
-                <div class="h-4 bg-editorial-border rounded w-3/4"></div>
-                <div class="h-3 bg-editorial-border rounded w-1/2"></div>
-                <div class="h-3 bg-editorial-border rounded w-2/3"></div>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="h-64 rounded-xl bg-editorial-paper animate-pulse">
-                <div class="h-48 bg-editorial-border"></div>
-                <div class="p-4 space-y-3">
-                    <div class="h-4 bg-editorial-border rounded w-full"></div>
-                    <div class="h-3 bg-editorial-border rounded w-3/4"></div>
-                    <div class="h-3 bg-editorial-border rounded w-2/3"></div>
-                </div>
-            </div>
-            <div class="h-64 rounded-xl bg-editorial-paper animate-pulse">
-                <div class="h-48 bg-editorial-border"></div>
-                <div class="p-4 space-y-3">
-                    <div class="h-4 bg-editorial-border rounded w-full"></div>
-                    <div class="h-3 bg-editorial-border rounded w-3/4"></div>
-                    <div class="h-3 bg-editorial-border rounded w-2/3"></div>
-                </div>
-            </div>
-            <div class="h-64 rounded-xl bg-editorial-paper animate-pulse">
-                <div class="h-48 bg-editorial-border"></div>
-                <div class="p-4 space-y-3">
-                    <div class="h-4 bg-editorial-border rounded w-full"></div>
-                    <div class="h-3 bg-editorial-border rounded w-3/4"></div>
-                    <div class="h-3 bg-editorial-border rounded w-2/3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </main>
 
 <!-- Footer -->
-<footer class="border-t border-editorial-border dark:border-white/10 bg-white dark:bg-editorial-charcoal py-8 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-sm text-editorial-muted">
-                <p>മലയാളം ന്യൂസ് ഹബ് - ആ dénmalayalam വാർത്തകളുടെ വിശ്വസനീയമായ സ്രോതസ്സ്</p>
-                <p class="mt-1">ഗूഗിൾ ന്യൂസ് ആർഎസ്എസ് ഫീഡുകളിലൂടെ നിരന്തരം പുതുക്കുന്നു</p>
-            </div>
-            <div class="flex gap-4 text-sm text-editorial-muted">
-                <a href="#" class="hover:text-editorial-red transition-colors">സ്വകാര്യതാ നയങ്ങൾ</a>
-                <a href="#" class="hover:text-editorial-red transition-colors">സംഭാവന</a>
-                <a href="#" class="hover:text-editorial-red transition-colors">ബന്ധപ്പെടുക</a>
-            </div>
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-text">
+            <p><strong>മലയാളം ന്യൂസ് ഹബ്</strong> — ആ 존재한다 മലയാളം വാർത്തകളുടെ വിശ്വസനീയമായ സ്രോതസ്സ്</p>
+            <p>ഗൂഗിൾ ന്യൂസ് ആർഎസ്എസ് ഫീഡുകളിലൂടെ നിരന്തരം പുതുക്ക‌شود. പുറത്തുള്ള ലിങ്കുകൾ ഗൂഗിൾ ന്യൂസിലേക്ക് പോകും.</p>
         </div>
-        <div class="mt-6 text-xs text-editorial-muted text-center">
-            പുറത്തുള്ള ലിങ്കുകൾ ഗൂഗിൾ ന്യൂസിലേക്ക് പോകും. തീയതി സമയം ഇന്ത്യൻ säs trouvait (Asia/Kolkata) പ്രകാരം ആണ്.
+        <div class="footer-links">
+            <a href="#">സ്വകാര്യതാ നയങ്ങൾ</a>
+            <a href="#">ഉത്തരവാദിത്തormais</a>
+            <a href="#">ബന്ധപ്പെടുക</a>
+        </div>
+        <div class="footer-text" style="font-size: 0.7rem; opacity: 0.7;">
+            സമയം: Asia/Kolkata (IST) · പുതുക്കൽ: ഓരോ 15 മിനിറ്റിനും ഒരു തവണ
         </div>
     </div>
 </footer>
 
 <!-- Back to Top -->
-<button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-editorial-red text-white rounded-full shadow-lg hover:bg-editorial-redDark transition-all transform translate-y-0 hover:translate-y-1 opacity-0 transition-opacity duration-300 z-40"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+<button id="backToTop" class="back-to-top" aria-label="Scroll to top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19v-5M12 7l5 5M12 7l-5 5"/></svg>
 </button>
 
 {% endblock %}
